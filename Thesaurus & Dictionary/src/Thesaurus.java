@@ -28,13 +28,11 @@ public class Thesaurus {
             }
             listHashSet.add(singlePhraseFormat.toString());
         }
-        ArrayList<String> asArrayList = new ArrayList<>();
-        asArrayList.addAll(listHashSet);
+        ArrayList<String> asArrayList = new ArrayList<>(listHashSet);
         asArrayList.sort(Comparator.naturalOrder());
         return asArrayList;
     }
-
-    public static void main(String[] args) {
+    public static void chooseWord() {
         StringBuilder pageData = new StringBuilder();
         StringBuilder pageSynonyms = new StringBuilder();
         StringBuilder pageAntonyms = new StringBuilder();
@@ -51,17 +49,26 @@ public class Thesaurus {
             dictionaryData.append(fileReader.next() +"\n");
         }
         try {
-            URL url = new URL("https://www.thesaurus.com/browse/coffee");
+            Scanner userInput = new Scanner(System.in);
+            System.out.println("Please enter a word.");
+            String word = userInput.next();
+            //URL url = new URL("https://www.thesaurus.com/browse/coffee");
+            URL url = new URL("https://www.thesaurus.com/browse/" + word);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             BufferedReader parser = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String readWrite;
             while ((readWrite = parser.readLine()) != null) {
                 String[] readWriteNewLine = readWrite.replace("<a", "\n").split("\n");
+                String tokenKey = "/browse/";
                 for (String newReadWrite : readWriteNewLine) {
-                    if (newReadWrite.contains("/browse/")) {
-                        if (newReadWrite.contains("css-1kg1yv8") || newReadWrite.contains("css-1gyuw4i") || newReadWrite.contains("css-fu3u5j")) {
-                            pageSynonyms.append(newReadWrite.substring(newReadWrite.indexOf("/browse/") + "/browse/".length(), newReadWrite.indexOf("\"", newReadWrite.indexOf("/browse/") + "/browse/".length())) + "\n");
+                    if (newReadWrite.contains(tokenKey)) {
+                        if (newReadWrite.contains("css-1kg1yv8")
+                                || newReadWrite.contains("css-1gyuw4i")
+                                || newReadWrite.contains("css-fu3u5j")
+                                || newReadWrite.contains("css-1n6g4vv")) {
+                            int keyLengthAdjustment = newReadWrite.indexOf(tokenKey) + tokenKey.length();
+                            pageSynonyms.append(newReadWrite.substring(keyLengthAdjustment, newReadWrite.indexOf("\"", keyLengthAdjustment)) + "\n");
                         }
                     }
                 }
@@ -73,11 +80,6 @@ public class Thesaurus {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//"css-ixatld e15rdun50"
-
-                //nn1ov4 = synonym or antonym
-                        // high tier: css-15bafsg main tier: eh475bn0
-        //System.out.println(pageData);
         System.out.println(pageData);
         System.out.println("------------------------------------");
         System.out.println(pageSynonyms);
@@ -86,5 +88,8 @@ public class Thesaurus {
         synonymsArrayList.forEach(item -> {
             System.out.println(item + ": " + dictionaryData.toString().contains(item));
         });
+    }
+    public static void main(String[] args) {
+        chooseWord();
     }
 }
