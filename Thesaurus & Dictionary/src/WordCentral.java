@@ -11,7 +11,7 @@ public class WordCentral {
             Word word = new Word();
             word.chooseWordPrompt();
             this.wordList.add(word);
-        } while (continueWordCentral());
+        } while (this.continueWordCentral());
     }
     public boolean continueWordCentral() {
         Scanner userInput = new Scanner(System.in);
