@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,8 +69,13 @@ public class SynonymV3 {
         this.synonyms = new ArrayList<>(listHashSet);
     }
     public static void main(String[] args) {
-        SynonymV3 synonym = new SynonymV3("hello");
+        Scanner userInput = new Scanner(System.in);
+        System.out.print("Enter a word: ");
+        String word = userInput.nextLine().trim().toLowerCase();
+        SynonymV3 synonym = new SynonymV3(word);
+        System.out.println("---Unformatted Synonyms---");
         synonym.rawSynonyms.forEach(System.out::println);
+        System.out.println("---Formatted Synonyms---");
         synonym.synonyms.forEach(System.out::println);
     }
 }
