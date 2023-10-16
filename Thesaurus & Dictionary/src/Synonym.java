@@ -6,6 +6,7 @@ import java.util.*;
 public class Synonym {
     String word;
     ArrayList<String> synonyms;
+    ArrayList<String> rawSynonyms;
     public Synonym(String word) {
         this.word = word;
         this.synonyms = new ArrayList<>();
